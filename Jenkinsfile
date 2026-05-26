@@ -72,6 +72,10 @@ pipeline {
                   %K8S_CONTAINER%=%DOCKER_IMAGE%:%APP_VERSION% ^
                   -n %K8S_NAMESPACE%
 
+                kubectl set env deployment/%K8S_DEPLOYMENT% ^
+                    APP_VERSION=%APP_VERSION% ^
+                    -n %K8S_NAMESPACE%
+
                 kubectl rollout status deployment/%K8S_DEPLOYMENT% -n %K8S_NAMESPACE%
                 '''
             }
