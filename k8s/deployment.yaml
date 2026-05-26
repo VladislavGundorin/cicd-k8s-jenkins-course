@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-k8s-app
+  namespace: cicd-k8s
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cicd-k8s-app
+  template:
+    metadata:
+      labels:
+        app: cicd-k8s-app
+    spec:
+      containers:
+      - name: cicd-k8s-app
+        image: cicd-k8s-app:local
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APP_VERSION
+          value: "local-k8s"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10

@@ -1,0 +1,6 @@
+app/target/
+target/
+*.log
+.idea/
+.vscode/
+.DS_Store
